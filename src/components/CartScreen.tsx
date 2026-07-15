@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Bookmark, Trash2, ShieldCheck, CreditCard, Landmark, CheckCircle2, ShoppingBag, ArrowRight, Sparkles } from 'lucide-react';
 import { Book, CartItem, Order } from '../types';
 
+const PLACEHOLDER_IMAGE = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%' height='100%' fill='%23F0F6FA'/><text x='50%' y='50%' font-family='Georgia' font-style='italic' font-size='16' fill='%2373848E' text-anchor='middle'>Cover Unavailable</text></svg>";
+
 interface CartScreenProps {
   cartItems: CartItem[];
   onUpdateQuantity: (bookId: string, quantity: number) => void;
@@ -226,6 +228,9 @@ export default function CartScreen({
                       src={item.book.image} 
                       alt={item.book.title} 
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        e.currentTarget.src = PLACEHOLDER_IMAGE;
+                      }}
                     />
                   </div>
 
@@ -341,6 +346,9 @@ export default function CartScreen({
                       alt={book.title} 
                       className="w-12 h-16 object-cover rounded shadow-sm shrink-0" 
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        e.currentTarget.src = PLACEHOLDER_IMAGE;
+                      }}
                     />
                     <div className="flex-1 min-w-0">
                       <h5 className="font-display text-xs font-bold text-text-primary truncate">{book.title}</h5>

@@ -23,6 +23,12 @@ export default function App() {
   
   // Initialize with exact mockup items to mirror the screenshot layout
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('cartItems');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error("Failed to parse cart items:", e);
+    }
     const book1 = BOOKS.find(b => b.id === 'b1'); // Modernism & Space
     const book2 = BOOKS.find(b => b.id === 'b2'); // The Digital Soul
     
@@ -35,6 +41,10 @@ export default function App() {
     }
     return initialList;
   });
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const [savedForLater, setSavedForLater] = useState<Book[]>([]);
   const [wishlistIds, setWishlistIds] = useState<string[]>(['b10', 'b11']); // pre-fill a couple of wishlist items

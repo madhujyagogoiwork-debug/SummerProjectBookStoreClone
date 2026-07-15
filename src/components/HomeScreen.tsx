@@ -9,6 +9,8 @@ interface HomeScreenProps {
   onAddToCart: (book: Book) => void;
 }
 
+const PLACEHOLDER_IMAGE = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%' height='100%' fill='%23F0F6FA'/><text x='50%' y='50%' font-family='Georgia' font-style='italic' font-size='16' fill='%2373848E' text-anchor='middle'>Cover Unavailable</text></svg>";
+
 const QUICK_TAGS = ['Minimalism', 'Tech', 'Business', 'Fiction', 'Art'];
 
 export default function HomeScreen({ onNavigate, onSearchHome, onAddToCart }: HomeScreenProps) {
@@ -250,6 +252,9 @@ export default function HomeScreen({ onNavigate, onSearchHome, onAddToCart }: Ho
                   src={book.image}
                   alt={book.title}
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = PLACEHOLDER_IMAGE;
+                  }}
                 />
                 <span className="absolute top-3 right-3 bg-primary-blue text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
                   NEW
@@ -348,6 +353,9 @@ export default function HomeScreen({ onNavigate, onSearchHome, onAddToCart }: Ho
                   src={RECOMMENDED_BOOK.image}
                   alt="Recommended book cover"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = PLACEHOLDER_IMAGE;
+                  }}
                 />
               </div>
             </div>

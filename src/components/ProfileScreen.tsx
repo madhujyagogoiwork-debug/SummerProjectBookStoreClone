@@ -3,6 +3,8 @@ import { Award, ShieldCheck, Download, Settings, History, ChevronLeft, ChevronRi
 import { UserProfile, Order } from '../types';
 import { RECENT_ORDERS, CONTINUE_READING_ITEMS, WISHLIST_BOOKS } from '../data';
 
+const PLACEHOLDER_IMAGE = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%' height='100%' fill='%23F0F6FA'/><text x='50%' y='50%' font-family='Georgia' font-style='italic' font-size='16' fill='%2373848E' text-anchor='middle'>Cover Unavailable</text></svg>";
+
 interface ProfileScreenProps {
   userProfile: UserProfile;
   orders: Order[];
@@ -236,6 +238,9 @@ export default function ProfileScreen({ userProfile, orders, onOpenReader }: Pro
                       alt={wish.title} 
                       className="w-full h-full object-cover" 
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        e.currentTarget.src = PLACEHOLDER_IMAGE;
+                      }}
                     />
                   </div>
                   <div className="min-w-0">
@@ -353,6 +358,9 @@ export default function ProfileScreen({ userProfile, orders, onOpenReader }: Pro
                       src={item.image} 
                       alt={item.title} 
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        e.currentTarget.src = PLACEHOLDER_IMAGE;
+                      }}
                     />
                     
                     {/* Shadow visual layer */}
@@ -474,6 +482,9 @@ export default function ProfileScreen({ userProfile, orders, onOpenReader }: Pro
                                 alt={ord.bookTitle} 
                                 className="w-full h-full object-cover"
                                 referrerPolicy="no-referrer"
+                                onError={(e) => {
+                                  e.currentTarget.src = PLACEHOLDER_IMAGE;
+                                }}
                               />
                             </div>
                             <div className="min-w-0">

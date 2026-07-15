@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { Search, Heart, ShoppingCart, Download, Headphones, BookOpen, PlayCircle, Star, X, ShieldCheck } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Search, Heart, ShoppingCart, Download, Headphones, BookOpen, PlayCircle, Star, X } from 'lucide-react';
 import { Book, BookType } from '../types';
 import { BOOKS } from '../data';
 
@@ -12,18 +12,65 @@ interface BrowseScreenProps {
 
 const CATEGORIES = ['All', 'Fiction', 'Tech', 'Business', 'Study Notes', 'Courses'] as const;
 
+// Default premium SVG fallback image for missing book covers
+const PLACEHOLDER_IMAGE = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%' height='100%' fill='%23F0F6FA'/><text x='50%' y='50%' font-family='Georgia' font-style='italic' font-size='16' fill='%2373848E' text-anchor='middle'>Cover Unavailable</text></svg>";
+
+// Premium animated skeleton loader component
+const BookCardSkeleton = () => (
+  <div className="flex flex-col bg-surface-soft border border-border-light rounded-2xl overflow-hidden shadow-sm animate-pulse">
+    <div className="aspect-[3/4] bg-surface-container relative"></div>
+    <div className="p-5 flex flex-col flex-grow space-y-3">
+      <div className="h-4 bg-surface-container rounded w-3/4"></div>
+      <div className="h-3 bg-surface-container rounded w-1/2"></div>
+      <div className="h-3 bg-surface-container rounded w-1/4"></div>
+      
+      <div className="pt-3 border-t border-border-light flex justify-between items-center mt-auto">
+        <div className="h-5 bg-surface-container rounded w-1/3"></div>
+        <div className="w-10 h-10 bg-surface-container rounded-xl"></div>
+      </div>
+    </div>
+  </div>
+);
+
 export default function BrowseScreen({ 
   initialSearchQuery = '', 
   onAddToCart, 
   wishlistIds, 
   onToggleWishlist 
 }: BrowseScreenProps) {
+  // Dual-state search for input debouncing
+  const [searchInputValue, setSearchInputValue] = useState(initialSearchQuery);
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
+  
   const [selectedCategory, setSelectedCategory] = useState<typeof CATEGORIES[number]>('All');
   const [sortBy, setSortBy] = useState<'popularity' | 'priceLow' | 'priceHigh' | 'newest'>('popularity');
+  const [isLoading, setIsLoading] = useState(true);
   
   // State for the Book Quick View Modal
   const [quickViewBook, setQuickViewBook] = useState<Book | null>(null);
+
+  // Sync state if initialSearchQuery changes from parent component
+  useEffect(() => {
+    setSearchInputValue(initialSearchQuery);
+    setSearchQuery(initialSearchQuery);
+  }, [initialSearchQuery]);
+
+  // Debounce search typing value (250ms)
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchQuery(searchInputValue);
+    }, 250);
+    return () => clearTimeout(handler);
+  }, [searchInputValue]);
+
+  // Simulated fetching loader transition whenever sorting or filtering changes
+  useEffect(() => {
+    setIsLoading(true);
+    const handler = setTimeout(() => {
+      setIsLoading(false);
+    }, 500); // 500ms premium skeleton duration
+    return () => clearTimeout(handler);
+  }, [searchQuery, selectedCategory, sortBy]);
 
   // Dynamically filter & sort book array
   const filteredAndSortedBooks = useMemo(() => {
@@ -109,8 +156,8 @@ export default function BrowseScreen({
           <input
             type="text"
             placeholder="Search by title, author, category, or keyword..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchInputValue}
+            onChange={(e) => setSearchInputValue(e.target.value)}
             className="w-full h-14 pl-14 pr-6 bg-surface-soft border border-border-light rounded-xl focus:ring-2 focus:ring-primary-blue/20 focus:border-primary-blue outline-none transition-all font-sans text-sm text-text-primary placeholder:text-text-muted shadow-sm"
           />
         </div>
@@ -119,7 +166,7 @@ export default function BrowseScreen({
       {/* Filters & Sorting Panel */}
       <section className="space-y-4">
         
-        {/* Category horizontal scrolling chips */}
+        {/* Category chips */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar scroll-smooth">
           {CATEGORIES.map((cat) => {
             const isActive = selectedCategory === cat;
@@ -163,12 +210,18 @@ export default function BrowseScreen({
 
       </section>
 
-      {/* Product Card Grid */}
-      {filteredAndSortedBooks.length === 0 ? (
+      {/* Product Grid Render */}
+      {isLoading ? (
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <BookCardSkeleton key={index} />
+          ))}
+        </section>
+      ) : filteredAndSortedBooks.length === 0 ? (
         <div className="py-20 text-center space-y-3">
           <p className="text-text-muted font-sans text-sm">No items match your filters.</p>
           <button 
-            onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }} 
+            onClick={() => { setSearchInputValue(''); setSearchQuery(''); setSelectedCategory('All'); }} 
             className="text-xs text-primary-blue font-semibold underline cursor-pointer"
           >
             Reset Filters
@@ -187,7 +240,6 @@ export default function BrowseScreen({
               >
                 {/* Book Card Cover area */}
                 <div className="aspect-[3/4] relative overflow-hidden bg-surface-container">
-                  {/* Realistic Book spine/page overlay depth */}
                   <div className="book-spine-overlay"></div>
                   <div className="book-edge-overlay"></div>
                   
@@ -196,6 +248,9 @@ export default function BrowseScreen({
                     alt={book.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103"
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.src = PLACEHOLDER_IMAGE;
+                    }}
                   />
                   
                   {/* Category Type Badge */}
@@ -206,7 +261,7 @@ export default function BrowseScreen({
                   {/* Wishlist Heart Toggle Button */}
                   <button 
                     onClick={(e) => {
-                      e.stopPropagation(); // prevent opening the quick view modal
+                      e.stopPropagation();
                       onToggleWishlist(book.id);
                     }}
                     className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-sm text-text-secondary hover:text-error-red cursor-pointer"
@@ -246,10 +301,9 @@ export default function BrowseScreen({
                       )}
                     </div>
 
-                    {/* Format specific button action */}
                     <button
                       onClick={(e) => {
-                        e.stopPropagation(); // prevent modal opening
+                        e.stopPropagation();
                         onAddToCart(book);
                       }}
                       className="w-10 h-10 rounded-xl bg-primary-blue hover:bg-primary-blue-container text-white flex items-center justify-center transition-all active:scale-90 shadow-sm cursor-pointer"
@@ -272,9 +326,8 @@ export default function BrowseScreen({
         const isWishlisted = wishlistIds.includes(quickViewBook.id);
         return (
           <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
-            <div className="bg-surface-card rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl border border-border-light flex flex-col md:flex-row relative">
+            <div className="bg-surface-card rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl border border-border-light flex flex-col md:flex-row relative animate-fade-in">
               
-              {/* Close Button */}
               <button 
                 onClick={() => setQuickViewBook(null)}
                 className="absolute right-4 top-4 text-text-muted hover:text-text-primary p-1.5 hover:bg-surface-soft rounded-full transition-colors z-10 cursor-pointer"
@@ -293,6 +346,9 @@ export default function BrowseScreen({
                     alt={quickViewBook.title}
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.src = PLACEHOLDER_IMAGE;
+                    }}
                   />
                 </div>
               </div>
