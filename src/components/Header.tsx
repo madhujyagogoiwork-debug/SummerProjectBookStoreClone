@@ -3,8 +3,8 @@ import { Menu, Search, ShoppingCart, Sun, Moon } from 'lucide-react';
 import { Book, CartItem } from '../types';
 
 interface HeaderProps {
-  activeTab: 'home' | 'browse' | 'cart' | 'profile';
-  onNavigate: (tab: 'home' | 'browse' | 'cart' | 'profile') => void;
+  activeTab: 'home' | 'browse' | 'cart' | 'profile' | 'admin';
+  onNavigate: (tab: 'home' | 'browse' | 'cart' | 'profile' | 'admin') => void;
   cartItems: CartItem[];
   userAvatar: string;
   onSearchHome?: (query: string) => void;
@@ -14,6 +14,10 @@ export default function Header({ activeTab, onNavigate, cartItems, userAvatar, o
   const [showSearch, setShowSearch] = useState(false);
   const [localSearch, setLocalSearch] = useState('');
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Animation states
+  const [isBumped, setIsBumped] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(false);
 
   // Initialize Dark Mode state from localStorage or system preference
   const [isDark, setIsDark] = useState(() => {
@@ -26,6 +30,14 @@ export default function Header({ activeTab, onNavigate, cartItems, userAvatar, o
     }
     return false;
   });
+
+  // Trigger cart counter bump animation
+  useEffect(() => {
+    if (totalCartCount === 0) return;
+    setIsBumped(true);
+    const timer = setTimeout(() => setIsBumped(false), 350);
+    return () => clearTimeout(timer);
+  }, [totalCartCount]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -72,9 +84,8 @@ export default function Header({ activeTab, onNavigate, cartItems, userAvatar, o
           </div>
         </div>
 
-        {/* Desktop Navigation links */}
         <nav className="hidden md:flex items-center space-x-8">
-          {(['home', 'browse', 'cart', 'profile'] as const).map((tab) => {
+          {(['home', 'browse', 'cart', 'profile', 'admin'] as const).map((tab) => {
             const isActive = activeTab === tab;
             return (
               <button
@@ -123,14 +134,18 @@ export default function Header({ activeTab, onNavigate, cartItems, userAvatar, o
 
           {/* Dark Mode Toggle */}
           <button
-            onClick={() => setIsDark(!isDark)}
+            onClick={() => {
+              setIsDark(!isDark);
+              setIsSpinning(true);
+              setTimeout(() => setIsSpinning(false), 450);
+            }}
             className="text-text-secondary hover:text-primary-blue hover:bg-surface-soft p-2.5 rounded-full transition-all duration-300 active:rotate-12 cursor-pointer"
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
             {isDark ? (
-              <Sun className="w-4.5 h-4.5 text-primary-blue animate-pulse" />
+              <Sun className={`w-4.5 h-4.5 text-primary-blue ${isSpinning ? 'animate-spin-once' : ''}`} />
             ) : (
-              <Moon className="w-4.5 h-4.5 text-text-secondary" />
+              <Moon className={`w-4.5 h-4.5 text-text-secondary ${isSpinning ? 'animate-spin-once' : ''}`} />
             )}
           </button>
 
@@ -142,7 +157,7 @@ export default function Header({ activeTab, onNavigate, cartItems, userAvatar, o
           >
             <ShoppingCart className="w-4.5 h-4.5" />
             {totalCartCount > 0 && (
-              <span className="absolute top-1 right-1 min-w-4 h-4 px-1 bg-error-red text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-surface-card shadow-sm animate-pulse">
+              <span className={`absolute top-1 right-1 min-w-4 h-4 px-1 bg-error-red text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-surface-card shadow-sm ${isBumped ? 'animate-badge-bump' : 'animate-pulse'}`}>
                 {totalCartCount}
               </span>
             )}

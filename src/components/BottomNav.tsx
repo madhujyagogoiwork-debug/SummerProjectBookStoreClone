@@ -2,8 +2,8 @@ import React from 'react';
 import { Home, Compass, BookOpen, ShoppingBag, User } from 'lucide-react';
 
 interface BottomNavProps {
-  activeTab: 'home' | 'browse' | 'cart' | 'profile';
-  onNavigate: (tab: 'home' | 'browse' | 'cart' | 'profile') => void;
+  activeTab: 'home' | 'browse' | 'cart' | 'profile' | 'admin';
+  onNavigate: (tab: 'home' | 'browse' | 'cart' | 'profile' | 'admin') => void;
   cartCount: number;
 }
 

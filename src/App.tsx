@@ -6,6 +6,8 @@ import HomeScreen from './components/HomeScreen';
 import BrowseScreen from './components/BrowseScreen';
 import CartScreen from './components/CartScreen';
 import ProfileScreen from './components/ProfileScreen';
+import AdminDashboard from './components/AdminDashboard';
+import AIChatbot from './components/AIChatbot';
 
 import { Book, CartItem, Order, UserProfile } from './types';
 import { BOOKS, USER_PROFILE } from './data';
@@ -18,8 +20,9 @@ interface Toast {
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'home' | 'browse' | 'cart' | 'profile'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'browse' | 'cart' | 'profile' | 'admin'>('home');
   const [searchQuery, setSearchQuery] = useState('');
+  const [books, setBooks] = useState<Book[]>(BOOKS);
   
   // Initialize with exact mockup items to mirror the screenshot layout
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
@@ -134,6 +137,16 @@ export default function App() {
     triggerToast("Removed from saved for later list.", "info");
   };
 
+  const handleAddNewBook = (newBook: Book) => {
+    setBooks(prev => [newBook, ...prev]);
+    triggerToast(`Added "${newBook.title}" to catalog storefront.`, 'success');
+  };
+
+  const handleDeleteBook = (bookId: string) => {
+    setBooks(prev => prev.filter(b => b.id !== bookId));
+    triggerToast("Removed book from catalog storefront.", 'info');
+  };
+
   const handleToggleWishlist = (bookId: string) => {
     setWishlistIds(prev => {
       const exists = prev.includes(bookId);
@@ -243,6 +256,7 @@ export default function App() {
             onAddToCart={handleAddToCart}
             wishlistIds={wishlistIds}
             onToggleWishlist={handleToggleWishlist}
+            books={books}
           />
         )}
 
@@ -268,10 +282,20 @@ export default function App() {
             onOpenReader={handleOpenReader}
           />
         )}
+
+        {activeTab === 'admin' && (
+          <AdminDashboard 
+            onAddNewBook={handleAddNewBook} 
+            onDeleteBook={handleDeleteBook} 
+          />
+        )}
       </main>
 
       {/* Global Interactive Editorial Footer */}
       <Footer />
+
+      {/* Global Interactive AI recommendations Copilot */}
+      <AIChatbot onAddToCart={handleAddToCart} onNavigate={setActiveTab} />
 
       {/* Responsive Bottom Navigation Bar for Mobile Viewports */}
       <BottomNav 

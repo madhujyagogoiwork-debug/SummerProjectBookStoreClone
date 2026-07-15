@@ -119,7 +119,8 @@ export default function CartScreen({
         shippingAddress: address || 'Default Address',
         paymentMethod: paymentMethod === 'Card' ? `${getCardType(cardNumber)} ending in ${cardNumber.slice(-4)}` : 'Apple Pay',
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-        status: 'Pending'
+        status: 'Pending',
+        price: total
       };
       
       onCheckoutSuccess(simulatedOrder);

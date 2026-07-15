@@ -26,14 +26,22 @@ export interface OrderItem {
 
 export interface Order {
   id: string;
-  items: OrderItem[];
-  subtotal: number;
-  tax: number;
-  total: number;
-  shippingAddress: string;
-  paymentMethod: string;
   date: string;
-  status: 'Delivered' | 'Pending';
+  status: string;
+  price: number;
+  
+  // Simulated visual logging fields
+  bookTitle?: string;
+  bookType?: string;
+  bookImage?: string;
+
+  // Next-Gen DB mapping fields
+  items?: OrderItem[];
+  subtotal?: number;
+  tax?: number;
+  total?: number;
+  shippingAddress?: string;
+  paymentMethod?: string;
 }
 
 export interface UserProfile {

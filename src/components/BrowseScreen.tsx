@@ -8,6 +8,7 @@ interface BrowseScreenProps {
   onAddToCart: (book: Book) => void;
   wishlistIds: string[];
   onToggleWishlist: (bookId: string) => void;
+  books?: Book[];
 }
 
 const CATEGORIES = ['All', 'Fiction', 'Tech', 'Business', 'Study Notes', 'Courses'] as const;
@@ -17,16 +18,16 @@ const PLACEHOLDER_IMAGE = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org
 
 // Premium animated skeleton loader component
 const BookCardSkeleton = () => (
-  <div className="flex flex-col bg-surface-soft border border-border-light rounded-2xl overflow-hidden shadow-sm animate-pulse">
-    <div className="aspect-[3/4] bg-surface-container relative"></div>
+  <div className="flex flex-col bg-surface-soft border border-border-light rounded-2xl overflow-hidden shadow-sm">
+    <div className="aspect-[3/4] bg-surface-container relative overflow-hidden animate-shimmer"></div>
     <div className="p-5 flex flex-col flex-grow space-y-3">
-      <div className="h-4 bg-surface-container rounded w-3/4"></div>
-      <div className="h-3 bg-surface-container rounded w-1/2"></div>
-      <div className="h-3 bg-surface-container rounded w-1/4"></div>
+      <div className="h-4 bg-surface-container rounded w-3/4 overflow-hidden animate-shimmer"></div>
+      <div className="h-3 bg-surface-container rounded w-1/2 overflow-hidden animate-shimmer"></div>
+      <div className="h-3 bg-surface-container rounded w-1/4 overflow-hidden animate-shimmer"></div>
       
       <div className="pt-3 border-t border-border-light flex justify-between items-center mt-auto">
-        <div className="h-5 bg-surface-container rounded w-1/3"></div>
-        <div className="w-10 h-10 bg-surface-container rounded-xl"></div>
+        <div className="h-5 bg-surface-container rounded w-1/3 overflow-hidden animate-shimmer"></div>
+        <div className="w-10 h-10 bg-surface-container rounded-xl overflow-hidden animate-shimmer"></div>
       </div>
     </div>
   </div>
@@ -36,7 +37,8 @@ export default function BrowseScreen({
   initialSearchQuery = '', 
   onAddToCart, 
   wishlistIds, 
-  onToggleWishlist 
+  onToggleWishlist,
+  books = BOOKS
 }: BrowseScreenProps) {
   // Dual-state search for input debouncing
   const [searchInputValue, setSearchInputValue] = useState(initialSearchQuery);
@@ -74,7 +76,7 @@ export default function BrowseScreen({
 
   // Dynamically filter & sort book array
   const filteredAndSortedBooks = useMemo(() => {
-    let result = [...BOOKS];
+    let result = [...books];
 
     // Search Query Filter
     if (searchQuery.trim()) {
@@ -267,7 +269,7 @@ export default function BrowseScreen({
                     className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-sm text-text-secondary hover:text-error-red cursor-pointer"
                     title={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}
                   >
-                    <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-error-red text-error-red' : ''}`} />
+                    <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-error-red text-error-red animate-heart-pop' : ''}`} />
                   </button>
                 </div>
 
