@@ -2,14 +2,14 @@
 @import "tailwindcss";
 
 :root {
-  /* HSL-based Pastel Blue & Rose Pink Palette */
-  --bg-light: #F4F8FA; /* soft sky-white */
+  /* HSL-based Pastel Blue & Premium Rose Pink Palette */
+  --bg-light: #F4F8FA; /* soft sky-white background */
   --bg-dim: #EDF3F7;
-  --bg-bright: #FAF3F6; /* soft rose-white */
+  --bg-bright: #FDF0F4; /* soft premium blush-pink background */
   
   --surface-card: #FFFFFF;
-  --surface-soft: #FDF2F5; /* light rose tint */
-  --surface-container-low: #F0F6FA; /* light blue tint */
+  --surface-soft: #FDF0F4; /* soft blush-pink tint */
+  --surface-container-low: #F0F6FA; /* soft sky-blue tint */
   --surface-container: #E5EEF4;
   --surface-container-high: #EADCE4;
   --surface-container-highest: #DECAD6;
@@ -18,50 +18,50 @@
   --text-muted: #73848E;
   --text-secondary: #4A5660;
   
-  --primary-blue: #0288D1; /* Beautiful Sky Blue */
-  --primary-blue-container: #0070B0;
+  --primary-blue: #D81B60; /* Premium Cherry Pink (Main Brand Color) */
+  --primary-blue-container: #AD1457; /* Deep Cherry Pink */
   --success-green: #2E7D32;
   --error-red: #C62828;
   --border-light: #E4EEF5;
   --border-dark: #C5D7E3;
 
-  /* Accent Pink for highlights, toggles, badges */
+  /* Accent colors */
   --accent-pink: #E91E63;
   --accent-pink-container: #C2185B;
   
-  --shadow-color: rgba(2, 136, 209, 0.05);
-  --shadow-color-hover: rgba(233, 30, 99, 0.12);
+  --shadow-color: rgba(216, 27, 96, 0.04);
+  --shadow-color-hover: rgba(233, 30, 99, 0.15);
 }
 
 .dark {
-  /* Dark Mode matching the theme (Deep Midnight Navy & Rose) */
-  --bg-light: #0A0D10; /* deep navy shadow */
+  /* Dark Mode matching the theme (Deep Charcoal Navy & Blossom Pink) */
+  --bg-light: #0A0D10; /* deep midnight blue shadow */
   --bg-dim: #11151A;
-  --bg-bright: #141116; /* deep violet shadow */
+  --bg-bright: #171115; /* deep dark rose shadow */
   
   --surface-card: #12171E;
-  --surface-soft: #1D151B; /* deep dark pink */
-  --surface-container-low: #131A22; /* deep dark blue */
+  --surface-soft: #1E1217; /* deep dark blossom */
+  --surface-container-low: #131A22; /* deep dark sky */
   --surface-container: #1B242F;
   --surface-container-high: #242E3B;
   --surface-container-highest: #2E3A4A;
   
-  --text-primary: #F0F4F8;
+  --text-primary: #F5F7F8;
   --text-muted: #8E9CA8;
   --text-secondary: #BACAD6;
   
-  --primary-blue: #81D4FA; /* light blue */
-  --primary-blue-container: #4FC3F7;
+  --primary-blue: #F06292; /* Premium Blossom Pink */
+  --primary-blue-container: #F48FB1; /* Light Blossom Pink */
   --success-green: #81C784;
   --error-red: #E57373;
   --border-light: #1D2836;
   --border-dark: #2D3E54;
   
-  --accent-pink: #F48FB1; /* light pink */
+  --accent-pink: #F48FB1;
   --accent-pink-container: #F06292;
   
-  --shadow-color: rgba(0, 0, 0, 0.4);
-  --shadow-color-hover: rgba(0, 0, 0, 0.6);
+  --shadow-color: rgba(0, 0, 0, 0.45);
+  --shadow-color-hover: rgba(240, 98, 146, 0.22);
 }
 
 @theme {
@@ -164,7 +164,7 @@ body {
   transform: translateY(-8px) rotateY(-7deg);
   box-shadow: 
     -6px 14px 28px var(--shadow-color-hover), 
-    0 10px 20px rgba(233, 30, 99, 0.1);
+    0 10px 20px rgba(216, 27, 96, 0.1);
 }
 
 /* Animations */
