@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Natural Tones Palette */
+  --color-bg-light: #F9F8F6;
+  --color-bg-dim: #E8E6DE;
+  --color-bg-bright: #F9F8F6;
+  --color-surface-card: #ffffff;
+  --color-surface-soft: #F1EFE9;
+  --color-surface-container-low: #F1EFE9;
+  --color-surface-container: #E8E6DE;
+  --color-surface-container-high: #E5E2DA;
+  --color-surface-container-highest: #D4D1C7;
+  --color-text-primary: #2D2D2A;
+  --color-text-muted: #8C8C7F;
+  --color-text-secondary: #6B6B63;
+  --color-primary-blue: #5A5A40;
+  --color-primary-blue-container: #454530;
+  --color-success-green: #656E42;
+  --color-error-red: #A94442;
+  --color-border-light: #E5E2DA;
+  --color-border-dark: #C2C0B5;
+}
+
+body {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom styles for high quality interaction */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

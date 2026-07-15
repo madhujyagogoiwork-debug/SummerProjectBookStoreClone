@@ -1,0 +1,6 @@
+{
+  "name": "BookVerse",
+  "description": "BookVerse is a premium digital marketplace that bridges the gap between traditional luxury publishing and modern technical precision.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
