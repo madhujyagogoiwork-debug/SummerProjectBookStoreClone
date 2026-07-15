@@ -31,7 +31,7 @@ export interface Order {
   tax: number;
   total: number;
   shippingAddress: string;
-  paymentMethod: 'Card' | 'Apple Pay';
+  paymentMethod: string;
   date: string;
   status: 'Delivered' | 'Pending';
 }

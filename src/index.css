@@ -1,37 +1,104 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
+:root {
+  /* HSL-based Pastel Blue & Rose Pink Palette */
+  --bg-light: #F4F8FA; /* soft sky-white */
+  --bg-dim: #EDF3F7;
+  --bg-bright: #FAF3F6; /* soft rose-white */
+  
+  --surface-card: #FFFFFF;
+  --surface-soft: #FDF2F5; /* light rose tint */
+  --surface-container-low: #F0F6FA; /* light blue tint */
+  --surface-container: #E5EEF4;
+  --surface-container-high: #EADCE4;
+  --surface-container-highest: #DECAD6;
+  
+  --text-primary: #1C2329;
+  --text-muted: #73848E;
+  --text-secondary: #4A5660;
+  
+  --primary-blue: #0288D1; /* Beautiful Sky Blue */
+  --primary-blue-container: #0070B0;
+  --success-green: #2E7D32;
+  --error-red: #C62828;
+  --border-light: #E4EEF5;
+  --border-dark: #C5D7E3;
+
+  /* Accent Pink for highlights, toggles, badges */
+  --accent-pink: #E91E63;
+  --accent-pink-container: #C2185B;
+  
+  --shadow-color: rgba(2, 136, 209, 0.05);
+  --shadow-color-hover: rgba(233, 30, 99, 0.12);
+}
+
+.dark {
+  /* Dark Mode matching the theme (Deep Midnight Navy & Rose) */
+  --bg-light: #0A0D10; /* deep navy shadow */
+  --bg-dim: #11151A;
+  --bg-bright: #141116; /* deep violet shadow */
+  
+  --surface-card: #12171E;
+  --surface-soft: #1D151B; /* deep dark pink */
+  --surface-container-low: #131A22; /* deep dark blue */
+  --surface-container: #1B242F;
+  --surface-container-high: #242E3B;
+  --surface-container-highest: #2E3A4A;
+  
+  --text-primary: #F0F4F8;
+  --text-muted: #8E9CA8;
+  --text-secondary: #BACAD6;
+  
+  --primary-blue: #81D4FA; /* light blue */
+  --primary-blue-container: #4FC3F7;
+  --success-green: #81C784;
+  --error-red: #E57373;
+  --border-light: #1D2836;
+  --border-dark: #2D3E54;
+  
+  --accent-pink: #F48FB1; /* light pink */
+  --accent-pink-container: #F06292;
+  
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-color-hover: rgba(0, 0, 0, 0.6);
+}
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Playfair Display", Georgia, serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* Natural Tones Palette */
-  --color-bg-light: #F9F8F6;
-  --color-bg-dim: #E8E6DE;
-  --color-bg-bright: #F9F8F6;
-  --color-surface-card: #ffffff;
-  --color-surface-soft: #F1EFE9;
-  --color-surface-container-low: #F1EFE9;
-  --color-surface-container: #E8E6DE;
-  --color-surface-container-high: #E5E2DA;
-  --color-surface-container-highest: #D4D1C7;
-  --color-text-primary: #2D2D2A;
-  --color-text-muted: #8C8C7F;
-  --color-text-secondary: #6B6B63;
-  --color-primary-blue: #5A5A40;
-  --color-primary-blue-container: #454530;
-  --color-success-green: #656E42;
-  --color-error-red: #A94442;
-  --color-border-light: #E5E2DA;
-  --color-border-dark: #C2C0B5;
+  --color-bg-light: var(--bg-light);
+  --color-bg-dim: var(--bg-dim);
+  --color-bg-bright: var(--bg-bright);
+  --color-surface-card: var(--surface-card);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-text-secondary: var(--text-secondary);
+  --color-primary-blue: var(--primary-blue);
+  --color-primary-blue-container: var(--primary-blue-container);
+  --color-success-green: var(--success-green);
+  --color-error-red: var(--error-red);
+  --color-border-light: var(--border-light);
+  --color-border-dark: var(--border-dark);
+  
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-pink-container: var(--accent-pink-container);
 }
 
 body {
-  background-color: var(--color-bg-light);
+  background-image: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-dim) 40%, var(--bg-bright) 100%);
+  background-attachment: fixed;
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* Custom styles for high quality interaction */
@@ -41,4 +108,87 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* 3D Physical Book Overlay Styles */
+.book-spine-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 12px;
+  background: linear-gradient(
+    to right, 
+    rgba(0, 0, 0, 0.22) 0%, 
+    rgba(255, 255, 255, 0.15) 35%, 
+    rgba(0, 0, 0, 0.08) 55%, 
+    rgba(0, 0, 0, 0.0) 100%
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+.book-edge-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    to left, 
+    rgba(255, 255, 255, 0.22) 0%, 
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+.book-shadow {
+  box-shadow: 
+    0 4px 6px -1px var(--shadow-color), 
+    0 2px 4px -1px var(--shadow-color), 
+    0 12px 20px -3px var(--shadow-color), 
+    4px 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.book-3d-container {
+  perspective: 1200px;
+}
+
+.book-3d-card {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.5s ease;
+}
+
+.book-3d-card:hover {
+  transform: translateY(-8px) rotateY(-7deg);
+  box-shadow: 
+    -6px 14px 28px var(--shadow-color-hover), 
+    0 10px 20px rgba(233, 30, 99, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in {
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Smooth glassmorphic highlights */
+.glassmorphism {
+  background-color: rgba(var(--surface-card), 0.75);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(var(--border-light), 0.4);
 }
